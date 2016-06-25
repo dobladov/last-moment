@@ -1,0 +1,10 @@
+[Plugin]
+Loader=python3
+Module=last-moment
+IAge=1
+Name=Last Moment
+Description=Continue any video where you left them.
+Description[es]=Continua cualquier video por donde lo dejaste.
+Authors=Daniel Doblado <daniel doblado@gmail.com> @dobladov
+Copyright=MIT
+Website=https://github.com/dobladov/last-moment
