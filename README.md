@@ -1,6 +1,6 @@
 # Last Moment
 
-Small plugin for [Totem](https://wiki.gnome.org/Apps/Videos) that saves the last time position of your videos 
+Plugin for [Totem](https://wiki.gnome.org/Apps/Videos) that saves the last time position of your videos 
 
 ## Install
 
@@ -21,7 +21,7 @@ Any time you open a video a small file tracks the progress with the inode number
 
 Just play a previously opened video and it will continue where it was. 
 
-The programr deletes the track of files older than 30 days.
+The program deletes the track of files older than 30 days.
 
 ## Documentation
 
