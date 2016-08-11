@@ -5,7 +5,7 @@ import logging
 import threading
 import urllib.parse
 from gi.repository import GObject, Peas
-from os import stat, makedirs, remove
+from os import stat, makedirs, remove, listdir
 from dateutil.parser import parse
 from os.path import exists, join
 from datetime import datetime
@@ -44,7 +44,7 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
 
     def file_closed(self, to):
         self.t.cancel()
-        
+
     def file_opened(self, to, path):
         threading.Timer(0.5, self.restore_time).start()
 
@@ -69,8 +69,8 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
         file = self.plugin_info.get_data_dir() + "/savedTimes/" + str(id) + ".json"
 
         if (exists(file)):
-            
-            with open(file) as data_file:    
+
+            with open(file) as data_file:
                 data = json.load(data_file)
                 self.set_time(data['time'])
                 logging.info("Restoring to " + str(data['time']))
@@ -84,7 +84,7 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
             return self._totem.get_property('current-time')
         else:
             return False
-        
+
     def set_time(self, time):
         if (self._totem.get_property('seekable')):
             logging.info("Go to " + str(time))
@@ -100,9 +100,9 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
 
     def set_interval(self, func, sec):
         def func_wrapper():
-            self.set_interval(func, sec) 
-            func()  
-        
+            self.set_interval(func, sec)
+            func()
+
         self.t = threading.Timer(sec, func_wrapper)
         self.t.start()
         return self.t
@@ -112,8 +112,8 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
         file = self.plugin_info.get_data_dir() + "/lastCheck.json"
 
         if (exists(file)):
-            
-            with open(file) as data_file:    
+
+            with open(file) as data_file:
                 data = json.load(data_file)
                 lastCheck = data['lastCheck']
                 logging.info("Last check " + lastCheck)
@@ -128,7 +128,7 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
             logging.info("Thre is not lastCheck.json file")
             self.set_last_clean()
             return False
-        
+
     def set_last_clean(self):
         # Creates a file with the last delete check
         data = {}
@@ -140,11 +140,11 @@ class StarterPlugin (GObject.Object, Peas.Activatable):
             json.dump(data, outfile)
             logging.info("Saving last check time")
 
-    def clean_old():
+    def clean_old(self):
         # Erase older files than 30 days
         path = self.plugin_info.get_data_dir() + "/savedTimes/"
 
-        for f in os.listdir(path):
-            if (os.stat(join(path,f)).st_mtime < time() - (30 * 86400)):
+        for f in listdir(path):
+            if (stat(join(path,f)).st_mtime < time() - (30 * 86400)):
                 logging.info("Removing " + f)
                 remove(join(path, f))
